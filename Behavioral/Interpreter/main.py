@@ -1,18 +1,40 @@
 # main.py
-from book_factory import BookFactory
+from book import Book
+from book_search import BookSearchInterpreter
+from book_interpreter import TitleExpression, AuthorExpression
 
 
-class BookSearchApp:
-    def __init__(self):
-        self.book_factory = BookFactory()
+def main():
+    books = [
+        Book("The Alchemist", "Paulo Coelho", 1988),
+        Book("To Kill a Mockingbird", "Harper Lee", 1960),
+        Book("1984", "George Orwell", 1949),
+        Book("Pride and Prejudice", "Jane Austen", 1813),
+        Book("The Catcher in the Rye", "J.D. Salinger", 1951),
+    ]
 
-    def search_book(self, title, author):
-        book = self.book_factory.get_book(title, author)
-        book.display()
+    interpreter = BookSearchInterpreter(books)
+
+    # Interpreting expressions
+    title_expr = TitleExpression("the")
+    author_expr1 = AuthorExpression("Jane Austen")
+    author_expr2 = AuthorExpression("Ernest Hemingway")
+
+    print("Searching for books with title containing 'the':")
+    results = interpreter.interpret(title_expr)
+    for book in results:
+        print(book)
+
+    print("\nSearching for books by 'Jane Austen':")
+    results = interpreter.interpret(author_expr1)
+    for book in results:
+        print(book)
+
+    print("\nSearching for books by 'Ernest Hemingway':")
+    results = interpreter.interpret(author_expr2)
+    for book in results:
+        print(book)
 
 
 if __name__ == "__main__":
-    app = BookSearchApp()
-    app.search_book("Book A", "Author X")
-    app.search_book("Book B", "Author Y")
-    app.search_book("Book A", "Author X")
+    main()
